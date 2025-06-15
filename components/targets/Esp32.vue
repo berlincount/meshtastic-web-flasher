@@ -146,13 +146,13 @@ const firmwareStore = useFirmwareStore();
 
 const partition = computed(() => {
     if (firmwareStore.$state.flashingIndex === 0) {
-        return t('esp32.partition_app');
+        return t('flash.esp32.partition_app');
     } 
     if (firmwareStore.$state.flashingIndex === 1) {
-        return t('esp32.partition_ota');
+        return t('flash.esp32.partition_ota');
     } 
     if (firmwareStore.$state.flashingIndex === 2) {
-        return t('esp32.partition_fs');
+        return t('flash.esp32.partition_fs');
     }
     return ''
 })
@@ -222,7 +222,8 @@ watch(() => firmwareStore.$state.shouldCleanInstall, async () => {
 
 const targetPrefix = computed(() => {
     let pioSuffix = "";
-    if (firmwareStore.$state.shouldInstallMui) {
+    // Crowpanel ends with -tft, so don't add -tft suffix
+    if (firmwareStore.$state.shouldInstallMui && !deviceStore.$state.selectedTarget.platformioTarget.endsWith("-tft")) {
         pioSuffix = "-tft";
     } else if (firmwareStore.$state.shouldInstallInkHud) {
         pioSuffix = "-inkhud";
